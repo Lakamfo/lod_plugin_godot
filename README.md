@@ -1,2 +1,2 @@
-# lod_module_godot
+# LOD Module for Godot 3.x
 LOD implementation for Godot 3.x
