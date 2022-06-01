@@ -29,7 +29,8 @@ var old_lod : int = active_lod
 func _ready() -> void:
 	update_meshs()
 
-func _process(delta: float) -> void:
+
+func _physics_process(_delta: float) -> void:
 	if !enabled:
 		return
 	if update_camera:
