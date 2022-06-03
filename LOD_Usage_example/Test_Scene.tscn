@@ -1,0 +1,1937 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://addons/golod_plugin/LOD_MODULE_SCRIPT.gd" type="Script" id=1]
+[ext_resource path="res://assets/maujoe.camera_control/scripts/camera_control.gd" type="Script" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+onready var fps = $container/fps
+onready var vertices = $container/vertices
+onready var calls = $container/calls
+
+var lod_tag = 0
+var set_lods = false
+
+var lods
+
+func _ready() -> void:
+	lods = get_tree().get_nodes_in_group(\"LOD\")
+
+func _process(delta: float) -> void:
+	fps.text = \"FPS: %s\" %Performance.get_monitor(Performance.TIME_FPS)
+	vertices.text = \"Vertices Drawn: %s\" % Performance.get_monitor(Performance.RENDER_VERTICES_IN_FRAME)
+	calls.text = \"Draw Calls: %s\" % Performance.get_monitor(Performance.RENDER_DRAW_CALLS_IN_FRAME)
+	if set_lods:
+		lods = get_tree().get_nodes_in_group(\"LOD\")
+		for i in lods:
+			i.enabled = false
+			i.set_lod(lod_tag)
+
+
+func lod_0() -> void:
+	lod_tag = 0
+
+
+func lod_1() -> void:
+	lod_tag = 1
+
+func lod_2() -> void:
+	lod_tag = 2
+
+
+func _on_CheckBox_toggled(button_pressed: bool) -> void:
+	set_lods = button_pressed
+	if !set_lods:
+		for i in lods:
+			i.enabled = true
+			i.set_lod(2)
+"
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.0862745, 0.0862745, 0.0862745, 0.498039 )
+
+[sub_resource type="InputEventAction" id=3]
+action = "1"
+
+[sub_resource type="ShortCut" id=4]
+shortcut = SubResource( 3 )
+
+[sub_resource type="InputEventAction" id=5]
+action = "2"
+
+[sub_resource type="ShortCut" id=6]
+shortcut = SubResource( 5 )
+
+[sub_resource type="InputEventAction" id=7]
+action = "3"
+
+[sub_resource type="ShortCut" id=8]
+shortcut = SubResource( 7 )
+
+[node name="Spatial" type="Spatial"]
+
+[node name="spheres" type="Spatial" parent="."]
+
+[node name="sphere" type="Spatial" parent="spheres"]
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere2" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere2"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere2"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere2"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere2"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere3" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 0 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere3"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere3"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere3"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere3"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere4" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere4"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere4"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere4"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere4"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere5" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere5"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere5"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere5"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere5"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere6" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere6"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere6"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere6"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere6"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere7" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere7"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere7"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere7"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere7"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere8" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere8"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere8"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere8"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere8"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere9" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere9"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere9"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere9"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere9"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere10" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, 0 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere10"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere10"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere10"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere10"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere11" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 0 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere11"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere11"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere11"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere11"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere12" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, 0 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere12"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere12"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere12"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere12"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere13" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, 8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere13"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere13"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere13"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere13"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere14" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, 8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere14"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere14"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere14"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere14"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere15" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere15"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere15"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere15"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere15"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere16" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere16"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere16"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere16"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere16"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere17" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, -8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere17"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere17"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere17"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere17"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere18" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere18"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere18"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere18"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere18"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere19" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 0 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere19"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere19"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere19"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere19"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere20" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 0 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere20"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere20"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere20"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere20"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere21" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 0 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere21"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere21"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere21"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere21"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere22" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere22"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere22"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere22"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere22"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere23" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere23"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere23"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere23"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere23"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere24" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere24"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere24"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere24"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere24"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere25" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere25"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere25"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere25"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere25"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere26" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, -8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere26"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere26"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere26"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere26"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere27" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -8 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere27"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere27"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere27"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere27"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere28" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, -24 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere28"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere28"]
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere28"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere28"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere29" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -24 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere29"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere29"]
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere29"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere29"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere30" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -24 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere30"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere30"]
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere30"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere30"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere31" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -16 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere31"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere31"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere31"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere31"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere32" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, -16 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere32"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere32"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere32"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere32"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere33" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -16 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere33"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere33"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere33"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere33"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere34" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -32 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere34"]
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere34"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere34"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere34"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere35" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, -32 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere35"]
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere35"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere35"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere35"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere36" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -32 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere36"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere36"]
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere36"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere36"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere37" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -24 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere37"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere37"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere37"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere37"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere38" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -24 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere38"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere38"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere38"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere38"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere39" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -24 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere39"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere39"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere39"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere39"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere40" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -16 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere40"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere40"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere40"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere40"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere41" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere41"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere41"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere41"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere41"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere42" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -16 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere42"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere42"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere42"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere42"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere43" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -32 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere43"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere43"]
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere43"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere43"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere44" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -32 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere44"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere44"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere44"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere44"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere45" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -32 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere45"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere45"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere45"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere45"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere46" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, -24 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere46"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere46"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere46"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere46"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere47" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -24 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere47"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere47"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere47"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere47"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere48" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -24 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere48"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere48"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere48"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere48"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere49" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -16 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere49"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere49"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere49"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere49"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere50" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, -16 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere50"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere50"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere50"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere50"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere51" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -16 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere51"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere51"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere51"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere51"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere52" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -32 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere52"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere52"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere52"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere52"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere53" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, -32 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere53"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere53"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere53"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere53"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere54" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -32 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere54"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere54"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere54"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere54"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere55" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, -48 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere55"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere55"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere55"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere55"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere56" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -48 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere56"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere56"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere56"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere56"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere57" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -48 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere57"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere57"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere57"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere57"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere58" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -40 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere58"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere58"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere58"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere58"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere59" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, -40 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere59"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere59"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere59"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere59"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere60" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -40 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere60"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere60"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere60"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere60"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere61" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -56 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere61"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere61"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere61"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere61"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere62" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, -56 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere62"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere62"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere62"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere62"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere63" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -56 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere63"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere63"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere63"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere63"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere64" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -48 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere64"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere64"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere64"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere64"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere65" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -48 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere65"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere65"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere65"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere65"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere66" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -48 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere66"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere66"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere66"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere66"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere67" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -40 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere67"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere67"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere67"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere67"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere68" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere68"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere68"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere68"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere68"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere69" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -40 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere69"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere69"]
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere69"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere69"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere70" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -56 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere70"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere70"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere70"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere70"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere71" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -56 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere71"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere71"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere71"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere71"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere72" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -56 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere72"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere72"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere72"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere72"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere73" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, -48 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere73"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere73"]
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere73"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere73"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere74" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -48 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere74"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere74"]
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere74"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere74"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere75" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -48 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere75"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere75"]
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere75"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere75"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere76" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -40 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere76"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere76"]
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere76"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere76"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere77" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, -40 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere77"]
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere77"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere77"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere77"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere78" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -40 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere78"]
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere78"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere78"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere78"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere79" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -56 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere79"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere79"]
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere79"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere79"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere80" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, -56 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere80"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere80"]
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere80"]
+visible = false
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere80"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="sphere81" type="Spatial" parent="spheres"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -56 )
+
+[node name="lod_0" type="CSGSphere" parent="spheres/sphere81"]
+visible = false
+rings = 12
+
+[node name="lod_1" type="CSGSphere" parent="spheres/sphere81"]
+visible = false
+rings = 4
+
+[node name="lod_2" type="CSGSphere" parent="spheres/sphere81"]
+rings = 3
+
+[node name="LOD" type="Node" parent="spheres/sphere81"]
+script = ExtResource( 1 )
+meshs_paths = {
+"0": NodePath("../lod_0"),
+"1": NodePath("../lod_1"),
+"2": NodePath("../lod_2")
+}
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 8, -0.0380001 )
+fov = 90.0
+script = ExtResource( 2 )
+mouse_mode = 0
+max_speed = Vector3( 5, 5, 5 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.866025, 0.319827, -0.384332, 0, 0.768663, 0.639654, 0.5, -0.553956, 0.665682, 0, 5.06488, 0 )
+shadow_enabled = true
+
+[node name="info" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+script = SubResource( 1 )
+
+[node name="Panel" type="Panel" parent="info"]
+margin_right = 294.0
+margin_bottom = 150.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="Label" type="Label" parent="info/Panel"]
+margin_left = 143.0
+margin_top = 82.0
+margin_right = 274.0
+margin_bottom = 113.0
+text = "Select LOD by numbers
+on keyboard 1-3"
+
+[node name="container" type="VBoxContainer" parent="info"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="fps" type="Label" parent="info/container"]
+margin_right = 134.0
+margin_bottom = 14.0
+text = "FPS: %s"
+
+[node name="vertices" type="Label" parent="info/container"]
+margin_top = 18.0
+margin_right = 134.0
+margin_bottom = 32.0
+text = "Vertices Drawn: %s"
+
+[node name="calls" type="Label" parent="info/container"]
+margin_top = 36.0
+margin_right = 134.0
+margin_bottom = 50.0
+text = "Draw Calls: %s"
+
+[node name="CheckBox" type="CheckBox" parent="info/container"]
+margin_top = 54.0
+margin_right = 134.0
+margin_bottom = 78.0
+text = "Set manually lod"
+
+[node name="Button" type="Button" parent="info/container"]
+margin_top = 82.0
+margin_right = 134.0
+margin_bottom = 102.0
+shortcut = SubResource( 4 )
+text = "LOD 0"
+
+[node name="Button2" type="Button" parent="info/container"]
+margin_top = 106.0
+margin_right = 134.0
+margin_bottom = 126.0
+shortcut = SubResource( 6 )
+text = "LOD 1"
+
+[node name="Button3" type="Button" parent="info/container"]
+margin_top = 130.0
+margin_right = 134.0
+margin_bottom = 150.0
+shortcut = SubResource( 8 )
+text = "LOD 2"
+
+[connection signal="toggled" from="info/container/CheckBox" to="info" method="_on_CheckBox_toggled"]
+[connection signal="pressed" from="info/container/Button" to="info" method="lod_0"]
+[connection signal="pressed" from="info/container/Button2" to="info" method="lod_1"]
+[connection signal="pressed" from="info/container/Button3" to="info" method="lod_2"]
